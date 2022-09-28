@@ -12,15 +12,16 @@ const connection = mysql.createConnection({
 
 app.use(express.json())
 app.use(express.urlencoded({extended : true}))
+// body-paser
 
 app.get("/",function(req,res){
   res.sendFile(path.join(__dirname,"board2.html"))
 })
-
+// board2html2 화면에 출력
 app.get("/create" , function(req,res){
   res.sendFile(path.join(__dirname, "board.html"))
 })
-
+// 버튼을 누르면 boardhtml로 이동
 
 
 app.post("/",function(req,res){
@@ -41,6 +42,7 @@ app.post("/",function(req,res){
     }
   })
 })
+// 데이터 입력
 app.get("/board",function(req,res){
   let sql ="select * from board;"
   connection.query(sql,function(err,result){
@@ -51,8 +53,8 @@ app.get("/board",function(req,res){
     }
   })
 })
-
+// 데이터 정보 보여주는 화면
 app.listen(5000,function(){
   console.log("http://localhost:5000/")
 })
-// 하이
+// 서버 포트

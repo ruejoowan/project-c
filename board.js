@@ -55,3 +55,4 @@ app.get("/board",function(req,res){
 app.listen(5000,function(){
   console.log("http://localhost:5000/")
 })
+// 하이

@@ -2,6 +2,7 @@ const express = require('express')
 const app = express();
 const mysql = require('mysql')
 const path = require('path')
+const crypto = require("crypto")
 const connection = mysql.createConnection({
   host :'localhost',
   port : "3306",
@@ -9,6 +10,17 @@ const connection = mysql.createConnection({
   password:'rzo01042218221@',
   database:'node.js'
 })
+
+
+function hashJuwan(pw){
+  
+  let salt = Math.random()
+  let abc =  "" + pw * salt
+  let password = crypto.createHash("sha512").update(abc).digest('base64')
+  console.log(password)
+}
+
+hashJuwan(1234)
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));

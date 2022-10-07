@@ -11,44 +11,73 @@ const connection = mysql.createConnection({
   database:'node.js'
 })
 
-// connection.connect()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
-app.get('/',function(req,res){
+app.use('/', express.static("./sign.markup"))
+app.use('/', express.static("./login.markup"))
+
+app.get('/',function(req , res){
   res.sendFile(path.join(__dirname, "sign.html"))
 })
 
 app.post('/',(req,res)=>{
-  // let sql = 'insert into user (id , password) values("' + id + '", "' + password + '")'
+  
   let body = req.body;
   console.log(body)
   let id = body.id;
   let password = body.password;
   let name = body.name;
-  let adress = body.adress;
+  let address = body.address;
   let phone = body.phone;
   
-  connection.query(`insert into user(id,name,adress,phone,password) values(${id},"${name}","${adress}","${phone}","${password}");`, (err)=>{
+  connection.query(`insert into user(id,name,address,phone,password) values(${id},"${name}","${address}","${phone}","${password}");`, (err)=>{
     if(err){
       console.error(err);
     }
   })
-  res.redirect("/users")
+  res.redirect("/login")
 })
 
-app.get('/users', (req, res)=>{
-  let sql = "select * from user;"
-  connection.query(sql, (err, result)=>{
+// app.get('/users', (req, res)=>{
+//     let sql = "select * from user;"
+//     connection.query(sql, (err, result)=>{
+//         if(err){
+//             console.log(err)
+//           }
+//           res.send(result);
+//         })
+//       })
+      
+app.get("/login",function(req,res){
+  res.sendFile(path.join(__dirname,"login.html"))
+})
+
+app.post("/login",function(req,res){
+  let sql ="select * from user;"
+  let body = req.body;
+
+  connection.query(sql,(err,result)=>{
+  let islogin = false;
+    
     if(err){
       console.log(err)
     }
-    res.send(result);
+    console.log(body)
+    result.forEach((item) => {
+      if(item.id === Number(body.id) && item.password === body.password){
+        islogin = true
+      }
+    });
+
+    if(islogin){
+      res.sendFile(path.join(__dirname,"login2.html"))
+    }else{
+      console.log(err)
+    }
   })
 })
-
-// connection.end()
 
 app.listen(8000, ()=>{
   console.log("http://localhost:8000/")

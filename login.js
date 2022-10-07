@@ -12,20 +12,22 @@ const connection = mysql.createConnection({
 })
 
 
-function hashJuwan(pw){
+// function hashJuwan(pw){
   
-  let salt = Math.random()
-  let abc =  "" + pw * salt
-  let password = crypto.createHash("sha512").update(abc).digest('base64')
-  console.log(password)
-}
+//   let salt = Math.random()
+//   let abc =  "" + pw * salt
+//   let password = crypto.createHash("sha512").update(abc).digest('base64')
+//   console.log(password)
+// }
 
-hashJuwan(1234)
+// hashJuwan(1234)
 
 app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 
-app.get("/",function(req,res){
+app.use('/', express.static("./login.markup"))
+
+app.get("/login",function(req,res){
   res.sendFile(path.join(__dirname,"login.html"))
 })
 
@@ -49,7 +51,7 @@ app.post("/",function(req,res){
     if(islogin){
       res.sendFile(path.join(__dirname,"login2.html"))
     }else{
-      console.log("내가 뭘 잘못했어?")
+      res.sendFile(path.join(__dirname,"sign.html"))
     }
   })
 })
@@ -64,6 +66,6 @@ app.get('/users', (req, res)=>{
   })
 })
 
-app.listen(3000, ()=>{
-  console.log("http://localhost:3000/")
+app.listen(8000, ()=>{
+  console.log("http://localhost:8000/")
 });
